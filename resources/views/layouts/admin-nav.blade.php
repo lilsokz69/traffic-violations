@@ -28,7 +28,7 @@
     ];
 @endphp
 
-<div x-data="{ open: {{ $isLocalInfoActive ? 'true' : 'false' }} }" class="relative hidden sm:flex sm:ms-10 sm:items-center">
+<div style="display: none;" x-data="{ open: {{ $isLocalInfoActive ? 'true' : 'false' }} }" class="relative hidden sm:flex sm:ms-10 sm:items-center">
     <button @click="open = !open"
         class="inline-flex items-center px-3 py-2 text-sm font-medium leading-4 rounded-md transition ease-in-out duration-150
                {{ $isLocalInfoActive ? 'text-indigo-700 bg-indigo-100 font-semibold' : 'text-gray-700 bg-white hover:text-gray-500' }}">
