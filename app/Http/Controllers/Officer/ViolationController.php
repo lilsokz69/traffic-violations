@@ -18,7 +18,7 @@ class ViolationController extends Controller
     public function index()
     {
         $violations = Report::with('reporter', 'officer', 'category', 'barangay')
-            ->where('city_municipality_id', Auth::user()->city_municipality_id)
+            // ->where('city_municipality_id', Auth::user()->city_municipality_id)
             ->orderBy('created_at', 'desc')
             ->get();
 
@@ -83,7 +83,7 @@ class ViolationController extends Controller
             'incident_date' => $request->incident_date,
             'region_id' => $request->region_id,
             'province_id' => $request->province_id,
-            'city_municipality_id' => $request->city_municipality_id,
+            'city_municipality_id' => 776, // $request->city_municipality_id
             'barangay_id' => $request->barangay_id,
             'status' => $request->status,
             'street' => $request->street,

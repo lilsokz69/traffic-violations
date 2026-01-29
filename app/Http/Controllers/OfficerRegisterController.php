@@ -33,7 +33,7 @@ class OfficerRegisterController extends Controller
             'phone' => $request->phone,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'city_municipality_id' => $request->city,
+            'city_municipality_id' => 776, // $request->city
             'role' => 'officer',
         ]);
 

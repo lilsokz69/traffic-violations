@@ -131,7 +131,7 @@ class ReportController extends Controller
     {
         // Get on-duty officers for the city
         $officers = User::where('role', 'officer')
-            ->where('city_municipality_id', $cityMunicipalityId)
+            // ->where('city_municipality_id', $cityMunicipalityId)
             ->where('on_duty', 1)
             ->pluck('phone');
 

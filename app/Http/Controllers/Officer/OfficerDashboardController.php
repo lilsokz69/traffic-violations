@@ -15,7 +15,7 @@ class OfficerDashboardController extends Controller
         $violations_count = Report::count();
 
         $violations = Report::with('reporter', 'officer', 'category', 'barangay')
-            ->where('city_municipality_id', Auth::user()->city_municipality_id)
+            // ->where('city_municipality_id', Auth::user()->city_municipality_id)
             ->orderBy('created_at', 'desc')
             ->take(5)
             ->get();
@@ -26,7 +26,7 @@ class OfficerDashboardController extends Controller
                 SUM(CASE WHEN status = 'rejected' THEN 1 ELSE 0 END) as rejected,
                 SUM(CASE WHEN status = 'resolved' THEN 1 ELSE 0 END) as resolved
             ")
-            ->where('city_municipality_id', Auth::user()->city_municipality_id)
+            // ->where('city_municipality_id', Auth::user()->city_municipality_id)
             // ->where('user_id', Auth::id())
             ->first();
 
