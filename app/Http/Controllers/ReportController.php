@@ -15,6 +15,7 @@ use App\Models\CitiesMunicipalities;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Log;
 
 class ReportController extends Controller
 {
@@ -120,18 +121,17 @@ class ReportController extends Controller
             }
         }
 
-        $status = $this->sendSmsToOfficers($report->id, $request->city_municipality_id);
+        $status = $this->sendSmsToOfficers($report->id, $request->barangay_id);
 
         return redirect()->route('reports.index')
             ->with('success', 'Report submitted successfully.')
             ->with('warning', $status);
     }
 
-    protected function sendSmsToOfficers($reportId, $cityMunicipalityId)
+    protected function sendSmsToOfficers($reportId, $brgy)
     {
         // Get on-duty officers for the city
         $officers = User::where('role', 'officer')
-            // ->where('city_municipality_id', $cityMunicipalityId)
             ->where('on_duty', 1)
             ->pluck('phone');
 
@@ -152,9 +152,15 @@ class ReportController extends Controller
             return $num;
         });
 
-        // Prepare message
-        $message = "New traffic violation reported in your assigned city. Violation ID: {$reportId}. Please check the system for details.";
+        $brgyData = Barangay::find($brgy);
 
+        // Prepare message
+        $message = "New traffic violation reported in your assigned city. Violation ID: {$reportId}. Please check the system for details. ";
+        $message .= "https://www.google.com/maps/search/?api=1&query=Binalbagan+" . urlencode($brgyData->brgy_name);
+
+        Log::debug($message . ", " . $phoneNumbers);
+
+        
         // dd($phoneNumbers, $message);        
         if ($phoneNumbers->count() === 1) {
             // Single officer → use single SMS endpoint
@@ -162,7 +168,7 @@ class ReportController extends Controller
                 "api_token" => env('IPROG_API_TOKEN'),
                 "phone_number" => $phoneNumbers->first(),
                 "message" => $message,
-                "sms_provider" => 2
+                //"sms_provider" => 2
             ]);
         } else {
             // Multiple officers → use bulk SMS endpoint
@@ -171,7 +177,7 @@ class ReportController extends Controller
                 "api_token" => env('IPROG_API_TOKEN'),
                 "phone_number" => $bulkList,
                 "message" => $message,
-                "sms_provider" => 2
+                //"sms_provider" => 2
             ]);
         }
 
@@ -284,7 +290,7 @@ class ReportController extends Controller
             }
         }
 
-        $status = $this->sendSmsToOfficers($report->id, $request->city_municipality_id);
+        $status = $this->sendSmsToOfficers($report->id, $request->barangay_id);
 
         return redirect()->route('reports.index')
             ->with('success', 'Report updated successfully.')
