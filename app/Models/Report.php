@@ -9,6 +9,11 @@ class Report extends Model
 {
     use SoftDeletes;
 
+    protected $casts = [
+        'incident_date' => 'datetime',
+        'updated_at'    => 'datetime',
+    ];
+
     protected $fillable = [
         'user_id',
         'region_id',

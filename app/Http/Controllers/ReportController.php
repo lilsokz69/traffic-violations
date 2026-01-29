@@ -67,18 +67,18 @@ class ReportController extends Controller
     {
         $violations = ViolationCategory::all();
         
-        $regions = Region::orderBy('region_name')->get();
+        $barangays = Barangay::where('city_municipality_id', 776)->orderBy('brgy_name')->get();
 
-        return view('reports.create', compact('violations', 'regions'));
+        return view('reports.create', compact('violations', 'barangays'));
     }
 
     public function store(Request $request)
     {
         $request->validate([
             'violation_type' => 'required|exists:violation_categories,id',
-            'region_id' => 'required|exists:regions,id',
-            'province_id' => 'required|exists:provinces,id',
-            'city_municipality_id' => 'required|exists:cities_municipalities,id',
+            //'region_id' => 'required|exists:regions,id',
+            //'province_id' => 'required|exists:provinces,id',
+            //'city_municipality_id' => 'required|exists:cities_municipalities,id',
             'barangay_id' => 'required|exists:barangays,id',
             'description' => 'required|string',
             'datetime' => 'required|date',
@@ -90,9 +90,9 @@ class ReportController extends Controller
 
         $report = Report::create([
             'user_id' => auth()->user() ? auth()->user()->id : null,
-            'region_id' => $request->region_id,
-            'province_id' => $request->province_id,
-            'city_municipality_id' => $request->city_municipality_id,
+            'region_id' => 18, //$request->region_id
+            'province_id' => 37, //$request->province_id
+            'city_municipality_id' => 776, //$request->city_municipality_id
             'barangay_id' => $request->barangay_id,
             'description' => $request->description,
             'incident_date' => Carbon::parse(str_replace('T', ' ', $request->datetime)),
@@ -220,17 +220,18 @@ class ReportController extends Controller
 
         // You'll need violations list for the select
         $violations = ViolationCategory::all();
-        $regions = Region::orderBy('region_name', 'asc')->get();
-        $provinces = Province::where('region_id', $report->region_id)->get();
-        $cities = CitiesMunicipalities::where('province_id', $report->province_id)->get();
-        $barangays = Barangay::where('city_municipality_id', $report->city_municipality_id)->get();
+        //$regions = Region::orderBy('region_name', 'asc')->get();
+        //$provinces = Province::where('region_id', $report->region_id)->get();
+        //$cities = CitiesMunicipalities::where('province_id', $report->province_id)->get();
+        // $barangays = Barangay::where('city_municipality_id', $report->city_municipality_id)->get();
+        $barangays = Barangay::where('city_municipality_id', 776)->orderBy('brgy_name')->get();
 
         return view('reports.edit', compact(
             'report',
             'violations',
-            'regions',
-            'provinces',
-            'cities',
+            //'regions',
+            //'provinces',
+            //'cities',
             'barangays'
         ));
     }
@@ -240,9 +241,6 @@ class ReportController extends Controller
         $request->validate([
             'description' => 'required|string',
             'incident_date' => 'required|date',
-            'region_id' => 'required|exists:regions,id',
-            'province_id' => 'required|exists:provinces,id',
-            'city_municipality_id' => 'required|exists:cities_municipalities,id',
             'barangay_id' => 'required|exists:barangays,id',
             'violation_type' => 'required|array',
             'violation_type.*' => 'exists:violation_categories,id',
@@ -261,9 +259,9 @@ class ReportController extends Controller
         $report->update([
             'description' => $request->description,
             'incident_date' => $request->incident_date,
-            'region_id' => $request->region_id,
-            'province_id' => $request->province_id,
-            'city_municipality_id' => $request->city_municipality_id,
+            'region_id' => 18, //$request->region_id
+            'province_id' => 37, //$request->province_id
+            'city_municipality_id' => 776, //$request->city_municipality_id
             'barangay_id' => $request->barangay_id,
             'street' => $request->street,
             'landmark' => $request->landmark

@@ -27,6 +27,7 @@
                         <th class="py-2 px-4 border-b">Categories</th>
                         <th class="py-2 px-4 border-b">Barangay</th>
                         <th class="py-2 px-4 border-b">Status</th>
+                        <th class="py-2 px-4 border-b">How fast?</th>
                         <th class="py-2 px-4 border-b">Accept</th>
                         <th class="py-2 px-4 border-b">Actions</th>
                     </tr>
@@ -74,6 +75,19 @@
                                     </span>
                                     @break
                             @endswitch
+                        </td>
+                        <td class="py-2 px-4 border-b">
+                            @if ($violation->status === 'resolved')
+                                @php
+                                    $minutes = $violation->incident_date->diffInMinutes($violation->updated_at);
+                                    $hours   = intdiv($minutes, 60);
+                                    $mins    = $minutes % 60;
+                                @endphp
+
+                                {{ $hours }}h {{ $mins }}m
+                            @else
+                                —
+                            @endif
                         </td>
                         <td class="py-2 px-4 border-b">
                             <div class="flex items-center space-x-3">

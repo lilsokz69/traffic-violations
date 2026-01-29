@@ -37,12 +37,9 @@ class ViolationController extends Controller
     {
         $report = Report::with('reporter', 'officer', 'category', 'barangay')->findOrFail($id);
         $violations = ViolationCategory::all();
-        $regions = Region::orderBy('region_name', 'asc')->get();
-        $provinces = Province::where('region_id', $report->region_id)->get();
-        $cities = CitiesMunicipalities::where('province_id', $report->province_id)->get();
-        $barangays = Barangay::where('city_municipality_id', $report->city_municipality_id)->get();
+        $barangays = Barangay::where('city_municipality_id', 776)->orderBy('brgy_name')->get();
 
-        return view('officer.violations.edit', compact('report', 'regions', 'provinces', 'cities', 'barangays', 'violations'));
+        return view('officer.violations.edit', compact('report', 'barangays', 'violations'));
     }
 
     public function update(Request $request, $id)
@@ -50,9 +47,6 @@ class ViolationController extends Controller
         $request->validate([
             'description' => 'required|string',
             'incident_date' => 'required|date',
-            'region_id' => 'required|exists:regions,id',
-            'province_id' => 'required|exists:provinces,id',
-            'city_municipality_id' => 'required|exists:cities_municipalities,id',
             'barangay_id' => 'required|exists:barangays,id',
             'violation_type' => 'required|array',
             'violation_type.*' => 'exists:violation_categories,id',
@@ -81,9 +75,9 @@ class ViolationController extends Controller
         $report->update([
             'description' => $request->description,
             'incident_date' => $request->incident_date,
-            'region_id' => $request->region_id,
-            'province_id' => $request->province_id,
-            'city_municipality_id' => 776, // $request->city_municipality_id
+            'region_id' => 18, //$request->region_id
+            'province_id' => 37, //$request->province_id
+            'city_municipality_id' => 776, //$request->city_municipality_id
             'barangay_id' => $request->barangay_id,
             'status' => $request->status,
             'street' => $request->street,

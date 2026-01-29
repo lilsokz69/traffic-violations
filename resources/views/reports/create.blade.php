@@ -29,57 +29,14 @@
             </div>
 
             <!-- Location -->
-            <div x-data="locationDropdowns()" x-init="init()">
-                <!-- Region -->
-                <div class="mb-4">
-                    <label class="block font-semibold">Region</label>
-                    <select name="region_id" x-model="selectedRegion" @change="loadProvinces()" class="w-full border p-2 rounded text-black">
-                        <option value="">Select Region</option>
-                        @foreach ($regions as $region)
-                            <option value="{{ $region->id }}">{{ $region->region_name }}</option>
-                        @endforeach
-                    </select>
-                </div>
-
-                <!-- Province -->
-                <div class="mb-4">
-                    <label class="block font-semibold">Province</label>
-                    <select name="province_id" x-model="selectedProvince" @change="loadCities()" class="w-full border p-2 rounded text-black">
-                        <option value="">Select Province</option>
-                        <template x-if="isLoadingProvinces">
-                            <option disabled>Loading...</option>
-                        </template>
-                        <template x-for="province in provinces" :key="province.id">
-                            <option :value="province.id" x-text="province.province_name"></option>
-                        </template>
-                    </select>
-                </div>
-
-                <!-- City -->
-                <div class="mb-4">
-                    <label class="block font-semibold">City</label>
-                    <select name="city_municipality_id" x-model="selectedCity" @change="loadBarangays()" class="w-full border p-2 rounded text-black">
-                        <option value="">Select City</option>
-                        <template x-if="isLoadingCities">
-                            <option disabled>Loading...</option>
-                        </template>
-                        <template x-for="city in cities" :key="city.id">
-                            <option :value="city.id" x-text="city.city_name"></option>
-                        </template>
-                    </select>
-                </div>
-
+            <div>
                 <!-- Barangay -->
                 <div class="mb-4">
                     <label class="block font-semibold">Barangay</label>
-                    <select name="barangay_id" x-model="selectedBarangay" class="w-full border p-2 rounded text-black">
-                        <option value="">Select Barangay</option>
-                        <template x-if="isLoadingBarangays">
-                            <option disabled>Loading...</option>
-                        </template>
-                        <template x-for="barangay in barangays" :key="barangay.id">
-                            <option :value="barangay.id" x-text="barangay.brgy_name"></option>
-                        </template>
+                    <select name="barangay_id" class="w-full border p-2 rounded text-black">
+                        @foreach ($barangays as $barangay)
+                            <option value="{{ $barangay->id }}">{{ $barangay->brgy_name }}</option>
+                        @endforeach
                     </select>
                 </div>
                 <div class="mb-4">
