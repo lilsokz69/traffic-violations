@@ -25,7 +25,7 @@ class OfficerRegisterController extends Controller
             'email' => 'required|string|email|max:255|unique:users',
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
             'photo' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
-            'city' => 'required|exists:cities_municipalities,id',
+            // 'city' => 'required|exists:cities_municipalities,id',
         ]);
 
         $user = User::create([

@@ -40,22 +40,6 @@
         </div>
 
         <div class="mt-4">
-            <label for="province" class="block font-medium text-sm text-gray-700">Province</label>
-            <select id="province" name="province" required class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm mt-1 block w-full">
-                <option value="">Select a province</option>
-                @foreach ($provinces as $province)
-                    <option value="{{ $province->id }}" {{ old('province') == $province->id ? 'selected' : '' }}>{{ $province->province_name }}</option>
-                @endforeach
-            </select>
-        </div>
-
-        <div class="mt-4">
-            <label for="city" class="block font-medium text-sm text-gray-700">City/Municipality</label>
-            <select id="city" name="city" required class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm mt-1 block w-full">
-            </select>
-        </div>
-
-        <div class="mt-4">
             <label for="phone" class="block font-medium text-sm text-gray-700">Phone</label>
             <input id="phone" name="phone" type="tel" placeholder="09XXXXXXXXX" required class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm mt-1 block w-full" value="{{ old('phone') }}">
         </div>
@@ -80,24 +64,3 @@
         </div>
     </form>
 </x-guest-layout>
-<script>
-    $('#province').on('change', function () {
-        var provinceId = $(this).val();
-        $('#city').html('<option value="">Loading...</option>');
-
-        if (provinceId) {
-            $.ajax({
-                url: '/get-cities/' + provinceId,
-                type: 'GET',
-                success: function (data) {
-                    $('#city').empty().append('<option value="">Select a city/municipality</option>');
-                    $.each(data, function (key, city) {
-                        $('#city').append('<option value="' + city.id + '">' + city.city_name + '</option>');
-                    });
-                }
-            });
-        } else {
-            $('#city').html('<option value="">Select a city/municipality</option>');
-        }
-    });
-</script>

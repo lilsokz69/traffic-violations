@@ -48,7 +48,7 @@ class RegisteredUserController extends Controller
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
             // 'role' => ['required', Rule::in(['reporter', 'officer'])],
             'photo' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
-            'city' => 'required|exists:cities_municipalities,id',
+            // 'city' => 'required|exists:cities_municipalities,id',
             'invitation' => 'nullable|string',
         ]);
 
