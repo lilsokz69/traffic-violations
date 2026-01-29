@@ -43,13 +43,11 @@
                 <thead class="bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-100">
                     <tr class="bg-gray-100">
                         <th class="py-2 px-4 border-b">Reporter</th>
-                        <th class="py-2 px-4 border-b">Region</th>
-                        <th class="py-2 px-4 border-b">Province</th>
-                        <th class="py-2 px-4 border-b">City</th>
                         <th class="py-2 px-4 border-b">Barangay</th>
                         <th class="py-2 px-4 border-b">Description</th>
                         <th class="py-2 px-4 border-b">Date</th>
                         <th class="py-2 px-4 border-b">Status</th>
+                        <th class="py-2 px-4 border-b">How fast?</th>
                         <th class="py-2 px-4 border-b">Actions</th>
                     </tr>
                 </thead>
@@ -57,9 +55,6 @@
                     @forelse($reports as $report)
                         <tr>
                             <td class="py-2 px-4 border-b">{{ $report->user->name ?? 'N/A' }}</td>
-                            <td class="py-2 px-4 border-b">{{ $report->region->region_name ?? 'N/A' }}</td>
-                            <td class="py-2 px-4 border-b">{{ $report->province->province_name ?? 'N/A' }}</td>
-                            <td class="py-2 px-4 border-b">{{ $report->city->city_name ?? 'N/A' }}</td>
                             <td class="py-2 px-4 border-b">{{ $report->barangay->brgy_name ?? 'N/A' }}</td>
                             <td class="py-2 px-4 border-b">{{ \Illuminate\Support\Str::limit($report->description, 150) }}</td>
                             <td class="py-2 px-4 border-b">{{ $report->created_at->format('Y-m-d H:i') }}</td>
@@ -74,6 +69,19 @@
                                     <button class="rounded-full bg-red-500 text-white font-bold p-1 px-2 whitespace-nowrap">Rejected</button>
                                 @endif
                             </td>
+                        <td class="py-2 px-4 border-b">
+                            @if ($report->status === 'resolved')
+                                @php
+                                    $minutes = $report->incident_date->diffInMinutes($report->updated_at);
+                                    $hours   = intdiv($minutes, 60);
+                                    $mins    = $minutes % 60;
+                                @endphp
+
+                                {{ $hours }}h {{ $mins }}m
+                            @else
+                                —
+                            @endif
+                        </td>
                             <td class="py-2 px-4 border-b">
                                 <div class="inline-flex rounded-md shadow-sm overflow-hidden" role="group">
 
